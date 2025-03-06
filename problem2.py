@@ -30,6 +30,34 @@ class Coo_matrix_self:
     
     def sum(self,dense_matrix_to_sum):
         converted_dense_matrix = build_coo_matrix_self(dense_matrix_to_sum)
+        temp_dict = {}
+        v3 = []
+        i3 = []
+        j3 = []
+
+        for l in range(len(converted_dense_matrix.v)):
+            temp_dict[(converted_dense_matrix.i[l],converted_dense_matrix.j[l])] =  converted_dense_matrix.v[l]
+        
+        for l in range(len(self.v)):
+            if (self.i[l],self.j[l]) in temp_dict:
+                v3.append(self.v[l] + temp_dict[(self.i[l],self.j[l])])
+
+                temp_dict.pop((self.i[l],self.j[l]))
+
+            else:
+                v3.append(self.v[l])
+
+            i3.append(self.i[l])
+            j3.append(self.j[l])
+        
+        for ij, val in temp_dict.items():
+            v3.append(val)
+            i3.append(ij[0])
+            j3.append(ij[1])
+        
+        result_matrix = Coo_matrix_self(v3,i3,j3)
+
+        return result_matrix
 
 
 
@@ -45,9 +73,7 @@ def build_coo_matrix_self(matrix):
                 v.append(num)
                 i.append(row_counter)
                 j.append(row.index(num))
-    print("v = ",v)
-    print("i = ",i)
-    print("j = ",j)
+
     coo_matrix_self = Coo_matrix_self(v,i,j)
     return coo_matrix_self
 
@@ -65,12 +91,19 @@ def compare_building_time(matrix):
 
     return total_time_self, total_time_library
 
+def dense_matrix_sum(matrix1, matrix2):
+    for i in range(len(matrix1)):
+        for j in range(len(matrix1)):
+            matrix1[i][j] = matrix1[i][j] + matrix2[i][j]
+
+    print(matrix1)
+    return matrix1
+            
 
 
-build_coo_matrix_self(dense_matrix)
-print("\n\n")
-build_coo_matrix_self(dense_matrix_2)
-
+coo_dense_matrix1 = build_coo_matrix_self(dense_matrix)
+coo_dense_matrix1.sum(dense_matrix_2)
+dense_matrix_sum(dense_matrix, dense_matrix_2)
 
 #coo = coo_matrix(dense_matrix)
 
