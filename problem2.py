@@ -50,29 +50,61 @@ class Coo_matrix_self:
             i3.append(self.i[l])
             j3.append(self.j[l])
         
-        for ij, val in temp_dict.items():
+        for (i,j), val in temp_dict.items():
             v3.append(val)
-            i3.append(ij[0])
-            j3.append(ij[1])
+            i3.append(i)
+            j3.append(j)
         
         result_matrix = Coo_matrix_self(v3,i3,j3)
-
+        
         return result_matrix
+    
+    def multiplication(self,dense_matrix_to_multiply):
+        converted_dense_matrix = build_coo_matrix_self(dense_matrix_to_multiply)
+        temp_dict = {}
+        result_matrix_dict = {}
+        v3 = []
+        i3 = []
+        j3 = []
+
+        for l in range(len(converted_dense_matrix.v)):
+            temp_dict[(converted_dense_matrix.i[l], converted_dense_matrix.j[l])] = converted_dense_matrix.v[l]
+        
+        for l in range(len(self.v)):
+            for (i2, j2), val2 in temp_dict.items():
+                if self.j[l] == i2:
+                    key = (self.i[l], j2)
+
+                    if key in result_matrix_dict:
+                        result_matrix_dict[key] += self.v[l]*val2
+                    else:
+                        result_matrix_dict[key] = self.v[l]*val2
 
 
+        for (i, j), val in result_matrix_dict.items():
+            v3.append(val)
+            i3.append(i)
+            j3.append(j)
+        
+        result_matrix = Coo_matrix_self(v3,i3,j3)
+        return result_matrix
+    
+    def __str__(self):
+        return f"v: {self.v}\ni: {self.i}\nj: {self.j}"
 
-def build_coo_matrix_self(matrix):
+
+def build_coo_matrix_self(dense_matrix):
     v=[]
     i=[]
     j=[]
     row_counter=-1
-    for row in matrix:
+    for row in dense_matrix:
         row_counter+=1
-        for num in row:
+        for index, num in enumerate(row):
             if num != 0:
                 v.append(num)
                 i.append(row_counter)
-                j.append(row.index(num))
+                j.append(index)
 
     coo_matrix_self = Coo_matrix_self(v,i,j)
     return coo_matrix_self
@@ -96,14 +128,33 @@ def dense_matrix_sum(matrix1, matrix2):
         for j in range(len(matrix1)):
             matrix1[i][j] = matrix1[i][j] + matrix2[i][j]
 
-    print(matrix1)
     return matrix1
-            
+
+def dense_matrix_multiplication(matrix1, matrix2):
+    
+    result_matrix = [[0] * len(matrix2) for _ in range(len(matrix1))]
+
+    for i in range(len(matrix1)):
+        for j in range(len(matrix2)):
+            for k in range(len(matrix1)):  
+                result_matrix[i][j] += matrix1[i][k] * matrix2[k][j]
+    
+    return result_matrix
 
 
 coo_dense_matrix1 = build_coo_matrix_self(dense_matrix)
-coo_dense_matrix1.sum(dense_matrix_2)
-dense_matrix_sum(dense_matrix, dense_matrix_2)
+##coo_dense_matrix1.sum(dense_matrix_2)
+##dense_matrix_sum(dense_matrix, dense_matrix_2)
+
+result = dense_matrix_multiplication(dense_matrix, dense_matrix_2)
+print("\n")
+result_multiplied_matrix = build_coo_matrix_self(result)
+print(result_multiplied_matrix)
+print("\nself -->\n")
+result_multiplied_matrix_self = coo_dense_matrix1.multiplication(dense_matrix_2)
+print(result_multiplied_matrix_self)
+
+
 
 #coo = coo_matrix(dense_matrix)
 
