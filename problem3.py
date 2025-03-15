@@ -1,4 +1,4 @@
-#!/udr/bin/env python3
+#!/usr/bin/env python3
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -40,20 +40,13 @@ def graph(function, taylor_expansion, x_min_range, x_max_range):
     plt.ylabel("y")
     plt.legend()
     plt.grid()
-    plt.show()
 
-#FUNCTIONS
-sin = sp.sin(x)
-cos = sp.cos(x)
-exp = sp.exp(x)
-ln = sp.ln(1 + x)
-function_5 = 1 / x**2
+    img_path = "taylor_plot.png"
+    plt.savefig(img_path)
+    plt.close()  
 
-    
+    return img_path  
 
-taylor_expansion = taylor_expansion(sin,5,0)
-print(f"\n{taylor_expansion}\n")
 
-graph(sin,taylor_expansion,-10,10)
 
 
