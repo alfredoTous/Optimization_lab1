@@ -41,7 +41,7 @@ def graph(function, taylor_expansion, x_min_range, x_max_range):
     plt.legend()
     plt.grid()
 
-    img_path = "taylor_plot.png"
+    img_path = "actual_plot.png"
     plt.savefig(img_path)
     plt.close()  
 

@@ -31,11 +31,9 @@ def problem1_graphic_solution(r, width, height):
     plt.axis('equal')
     plt.legend(bbox_to_anchor=(1.15, 1), loc='upper left')
     plt.tight_layout()
-    plt.show()
-
-if __name__ == "__main__":
-    radio = 5
-    width_prueba = 7.07  
-    height_prueba = 7.07
     
-    problem1_graphic_solution(radio, width_prueba, height_prueba)
+    img_path = "actual_plot.png"
+    plt.savefig(img_path)
+    plt.close()
+    
+    return img_path
