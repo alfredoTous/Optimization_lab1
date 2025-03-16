@@ -9,7 +9,7 @@ from problem1 import *
 
 def problem1_frame():
     clean_content_frame()
-    root.geometry("800x1000")
+    root.geometry("800x800")
     center_window(root)
     text = """
     Determine the area of the largest rectangle that can be inscribed in
@@ -47,6 +47,8 @@ problem using the graphical method\n\n -Our design variables are x = width, y = 
     img_label = None
     
     def calculate_graph_problem1():
+        root.geometry("800x1000")
+        center_window(root)
         global img_label
         try:
             r,x,y = int(entry_r.get()),float(entry_x.get()),float(entry_y.get())
@@ -67,25 +69,12 @@ problem using the graphical method\n\n -Our design variables are x = width, y = 
     btn_calculate = ctk.CTkButton(content_frame, text="Calculate", command=calculate_graph_problem1)
     btn_calculate.pack(pady=5)
 
-
-
-def problem2_window():
-    print("Ventana2")
-
-def problem4_window():
-    print("Ventana4")
-
-def clean_content_frame():
-    for widget in content_frame.winfo_children():
-        widget.destroy()
-    root.geometry("800x700")
-
+def problem2_frame():
+    clean_content_frame()
 
 def problem3_frame(): 
     clean_content_frame()
-    root.geometry("800x1000")
-    center_window(root)
-
+    center_window(root) 
     label_instructions = ctk.CTkLabel(content_frame, text="Input the parameters for the Taylor Expansion", font=("Times New Roman",18,"bold"))
     label_instructions.pack(pady=5)
 
@@ -116,7 +105,8 @@ def problem3_frame():
 
     def calculate_taylor_expansion():
         global img_label
-
+        root.geometry("800x1000")
+        center_window(root)
         try:
             n = int(entry_n.get())
             a = int(entry_a.get())
@@ -147,6 +137,15 @@ def problem3_frame():
     btn_calculate = ctk.CTkButton(content_frame, text="Calculate", command=calculate_taylor_expansion)
     btn_calculate.pack(pady=5)
 
+def problem4_window():
+    print("Hola")
+
+def clean_content_frame():
+    for widget in content_frame.winfo_children():
+        widget.destroy()
+    root.geometry("800x720")
+
+
 def center_window(root):
     root.update_idletasks()  
     width = root.winfo_width()
@@ -161,7 +160,7 @@ def center_window(root):
 if __name__ == "__main__":
     root = ctk.CTk()
     root.title("Optimization Lab1")
-    root.geometry("800x700")
+    root.geometry("650x450")
 
     title = ctk.CTkLabel(root,text="Optimization Problems", font=("Times New Roman",30,"bold"))
     title.pack(pady=30)
@@ -176,7 +175,7 @@ if __name__ == "__main__":
     btn_problem1 = ctk.CTkButton(btn_frame, text="Problem 1", command=problem1_frame)
     btn_problem1.pack(side="left", padx=10)
 
-    btn_problem2 = ctk.CTkButton(btn_frame, text="Problem 2", command=problem2_window)
+    btn_problem2 = ctk.CTkButton(btn_frame, text="Problem 2", command=problem2_frame)
     btn_problem2.pack(side="left", padx=10)
 
     btn_problem3 = ctk.CTkButton(btn_frame, text="Problem 3", command=problem3_frame)
