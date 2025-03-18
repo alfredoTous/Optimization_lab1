@@ -6,6 +6,18 @@ from problem1 import *
 #GLOBAL VARIABLES
 
 
+def create_input_pair(parent, label_text, default_value):
+    frame = ctk.CTkFrame(parent)
+    frame.pack(side="left", padx=10, pady=5, fill="x", expand=True)
+    
+    label = ctk.CTkLabel(frame, text=label_text)
+    label.pack(side="top", anchor="w")
+    
+    entry = ctk.CTkEntry(frame)
+    entry.insert(0, str(default_value))
+    entry.pack(side="top", fill="x", expand=True)
+    
+    return entry
 
 def problem1_frame():
     clean_content_frame()
@@ -23,19 +35,6 @@ problem using the graphical method\n\n -Our design variables are x = width, y = 
 
     input_frame = ctk.CTkFrame(content_frame)
     input_frame.pack(anchor="n",pady=(0,10),fill="x", expand=True)
-
-    def create_input_pair(parent, label_text, default_value):
-        frame = ctk.CTkFrame(parent)
-        frame.pack(side="left", padx=10, pady=5, fill="x", expand=True)
-        
-        label = ctk.CTkLabel(frame, text=label_text)
-        label.pack(side="top", anchor="w")
-        
-        entry = ctk.CTkEntry(frame)
-        entry.insert(0, str(default_value))
-        entry.pack(side="top", fill="x", expand=True)
-        
-        return entry
 
     entry_r = create_input_pair(input_frame, "Radius (r):", 5)
     entry_x = create_input_pair(input_frame, "Width (x):", 7.07)
@@ -69,8 +68,42 @@ problem using the graphical method\n\n -Our design variables are x = width, y = 
     btn_calculate = ctk.CTkButton(content_frame, text="Calculate", command=calculate_graph_problem1)
     btn_calculate.pack(pady=5)
 
+
 def problem2_frame():
     clean_content_frame()
+    root.geometry("800x600")
+    center_window(root)
+    input_frame = ctk.CTkFrame(content_frame)
+    input_frame.pack(anchor="n",pady=(0,10),fill="x", expand=True)
+    
+    label1_list = ["COO MATRIX"]
+    label2_list = ["COO MATRIX", "CSR MATRIX", "CSC MATRIX"]
+    label3_list = ["ADDITION", "MULTIPLICATION"]
+    label4_list = ["5x5","16x16",""]
+
+    col1_frame = ctk.CTkFrame(input_frame)
+    col1_frame.pack(side="left", fill="both", expand=True, padx=5)
+
+    col2_frame = ctk.CTkFrame(input_frame)
+    col2_frame.pack(side="left", fill="both", expand=True, padx=5)
+
+    col3_frame = ctk.CTkFrame(input_frame)
+    col3_frame.pack(side="left", fill="both", expand=True, padx=5)
+
+    label1 = ctk.CTkLabel(col1_frame, text="Self Implemented")
+    label1.pack(side="top", anchor="w")
+    comboBox_label1 = ctk.CTkComboBox(col1_frame, values=label1_list)
+    comboBox_label1.pack(side="top", fill="x", expand=True)
+
+    label2 = ctk.CTkLabel(col2_frame, text="Spicy.py Implementation")
+    label2.pack(side="top", anchor="w")
+    comboBox_label2 = ctk.CTkComboBox(col2_frame, values=label2_list)
+    comboBox_label2.pack(side="top", fill="x", expand=True)
+
+    label3 = ctk.CTkLabel(col3_frame, text="Operation")
+    label3.pack(side="top", anchor="w")
+    comboBox_label3 = ctk.CTkComboBox(col3_frame, values=label3_list)  
+    comboBox_label3.pack(side="top", fill="x", expand=True)
 
 def problem3_frame(): 
     clean_content_frame()
