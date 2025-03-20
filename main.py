@@ -3,6 +3,8 @@ import customtkinter as ctk
 from PIL import Image
 from problem3 import *
 from problem1 import *
+from problem2 import *
+
 #GLOBAL VARIABLES
 
 
@@ -71,15 +73,14 @@ problem using the graphical method\n\n -Our design variables are x = width, y = 
 
 def problem2_frame():
     clean_content_frame()
-    root.geometry("800x600")
     center_window(root)
     input_frame = ctk.CTkFrame(content_frame)
-    input_frame.pack(anchor="n",pady=(0,10),fill="x", expand=True)
+    input_frame.pack(anchor="n",pady=(0,5),fill="x", expand=True)
     
     label1_list = ["COO MATRIX"]
     label2_list = ["COO MATRIX", "CSR MATRIX", "CSC MATRIX"]
     label3_list = ["ADDITION", "MULTIPLICATION"]
-    label4_list = ["5x5","16x16",""]
+    label4_list = ["16x16","32x32","128x128"]
 
     col1_frame = ctk.CTkFrame(input_frame)
     col1_frame.pack(side="left", fill="both", expand=True, padx=5)
@@ -105,8 +106,57 @@ def problem2_frame():
     comboBox_label3 = ctk.CTkComboBox(col3_frame, values=label3_list)  
     comboBox_label3.pack(side="top", fill="x", expand=True)
 
+    label4 = ctk.CTkLabel(input_frame, text="Matrix Size:")
+    label4.pack()
+    size_combobox = ctk.CTkComboBox(input_frame, values=label4_list)
+    size_combobox.pack()
+    
+    global result_frame
+    result_frame = None
+    def calculate_sparse_matrix():
+        root.geometry("720x600")
+        center_window(root)
+        
+        global result_frame
+        if result_frame is not None:
+            result_frame.destroy()
+
+        result_frame = ctk.CTkFrame(content_frame)
+        result_frame.pack(pady=10, fill="x", expand=True)
+
+        operation = comboBox_label3.get()
+        python_implementation = comboBox_label2.get()
+        matrix_size = size_combobox.get()
+        format_spicy = comboBox_label2.get()
+        
+
+        self_matrix_building_time, self_matrix_operation_time = calculate_operation_self_matrix(matrix_size,operation)
+        spicy_matrix_building_time, spicy_matrix_operation_time = calculate_operation_spicy_matrix(matrix_size,operation,format_spicy)
+        dense_matrix_operation_time = calculate_operation_dense_matrix(matrix_size,operation)
+
+
+        result_label = ctk.CTkLabel(result_frame, text="Execution Times:", font=("Times New Roman",20,"bold"))
+        result_label.pack()
+
+        time_self_label = ctk.CTkLabel(result_frame, text=f"Self Implemented: {self_matrix_operation_time*1000:.5f}ms ----- ({self_matrix_building_time*1000:.5f}ms to build format)",font=("Times New Roman",18,"italic"))
+        time_self_label.pack()
+
+        time_python_label = ctk.CTkLabel(result_frame, text=f"Python Libraries: {spicy_matrix_operation_time*1000:.5f}ms ----- ({spicy_matrix_building_time*1000:.5f}ms to build format)",font=("Times New Roman",18,"italic"))
+        time_python_label.pack()
+
+        time_dense_label = ctk.CTkLabel(result_frame, text=f"Dense Matrix Time: {dense_matrix_operation_time*1000:.5f}ms",font=("Times New Roman",18,"italic"))
+        time_dense_label.pack()
+
+    calculate_button = ctk.CTkButton(content_frame, text="Calculate", command=calculate_sparse_matrix)
+    calculate_button.pack(pady=10)
+
+        
+
+
+
 def problem3_frame(): 
     clean_content_frame()
+    root.geometry("800x720")
     center_window(root) 
     label_instructions = ctk.CTkLabel(content_frame, text="Input the parameters for the Taylor Expansion", font=("Times New Roman",18,"bold"))
     label_instructions.pack(pady=5)
@@ -176,7 +226,7 @@ def problem4_window():
 def clean_content_frame():
     for widget in content_frame.winfo_children():
         widget.destroy()
-    root.geometry("800x720")
+    root.geometry("650x450")
 
 
 def center_window(root):
