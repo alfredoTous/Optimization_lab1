@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 import customtkinter as ctk
+import matplotlib
+matplotlib.use('Agg')
 from PIL import Image
 from problem3 import *
 from problem1 import *
 from problem2 import *
-
-#GLOBAL VARIABLES
+from problem4 import *
 
 
 def create_input_pair(parent, label_text, default_value):
@@ -220,8 +221,65 @@ def problem3_frame():
     btn_calculate = ctk.CTkButton(content_frame, text="Calculate", command=calculate_taylor_expansion)
     btn_calculate.pack(pady=5)
 
-def problem4_window():
-    print("Hola")
+def problem4_frame():
+    clean_content_frame()
+    root.geometry("650x800")
+    center_window(root)
+    input_frame = ctk.CTkFrame(content_frame)
+    input_frame.pack(anchor="n",pady=(0,10),fill="x", expand=True)
+
+    entry_x0 = create_input_pair(input_frame, "Initial Point", 10)
+    entry_tol = create_input_pair(input_frame, "Learning Rate", 0.1)
+
+    function_list = ["x**2", "(x - 3)**2 + 2"]
+    label_func = ctk.CTkLabel(input_frame, text="Select a Function:")
+    label_func.pack()
+    comboBox_func = ctk.CTkComboBox(input_frame, values=function_list)
+    comboBox_func.pack()
+    
+    global img_label
+    graph_frame = ctk.CTkFrame(content_frame)
+    graph_frame.pack(pady=10, fill="both", expand=True)
+
+    img_label = None  
+
+    def calculate_problem4():
+        try:
+            global img_label
+            x0 = int(entry_x0.get())
+            tol = float(entry_tol.get())
+            f = comboBox_func.get()
+
+            image_path = calculate_optimization_methods(f,tol,x0)
+
+            if img_label:
+                img_label.destroy()
+
+            img = Image.open(image_path)
+            ctk_img = ctk.CTkImage(light_image=img, size=(500,400))
+
+            img_label = ctk.CTkLabel(graph_frame,text="",image=ctk_img)
+            img_label.pack()
+
+        except Exception as e:
+            print(f"\nError: {str(e)}")
+
+
+    btn_calculate = ctk.CTkButton(content_frame, text="Calculate", command=calculate_problem4)
+    btn_calculate.pack(pady=5)
+
+def f1(x):
+    return x**2
+
+def grad_f1(x):
+    return 2*x
+
+def f2(x):
+    return (x - 3)**2 + 2
+
+def grad_f2(x):
+    return 2*(x - 3)
+
 
 def clean_content_frame():
     for widget in content_frame.winfo_children():
@@ -264,7 +322,7 @@ if __name__ == "__main__":
     btn_problem3 = ctk.CTkButton(btn_frame, text="Problem 3", command=problem3_frame)
     btn_problem3.pack(side="left", padx=10)
 
-    btn_problem4 = ctk.CTkButton(btn_frame, text="Problem 4", command=problem4_window)
+    btn_problem4 = ctk.CTkButton(btn_frame, text="Problem 4", command=problem4_frame)
     btn_problem4.pack(side="left", padx=10)
 
 

@@ -17,15 +17,14 @@ def grad_f2(x):
 def track_trajectory(xk, trajectory):
     trajectory.append(xk[0])
 
-x0 = np.array([10.0])
-tol = 0.01
 methods = ["CG", "Newton-CG", "BFGS"]
 
 trajectories = {}
 
 results = {}
 
-def calculate_optimization_methods(f,grad_f,x0,tol):
+def optimization_methods(f,grad_f,x0,tol):
+    print("\n")
     for method in methods:
         trajectory = [x0[0]]  
         if method == "Newton-CG":
@@ -44,7 +43,7 @@ def calculate_optimization_methods(f,grad_f,x0,tol):
     y_vals = f(x_vals)
 
     plt.figure(figsize=(6, 4))
-    plt.plot(x_vals, y_vals, label=r"$f(x) = x^2$", color="black")
+    plt.plot(x_vals, y_vals, label=r"f(x)", color="black")
 
     for method, traj in trajectories.items():
         plt.plot(traj, f(np.array(traj)), marker="o", linestyle="dashed", markersize=8, label=method)
@@ -52,9 +51,28 @@ def calculate_optimization_methods(f,grad_f,x0,tol):
     plt.legend()
     plt.xlabel("x")
     plt.ylabel("f(x)")
-    plt.title("Iteraciones de Optimización en $x^2$")
-    plt.grid(True)
-    plt.show()
+    plt.title(f"Optimization on f(x)$")
+    plt.grid(True)  
 
-calculate_optimization_methods(f1,grad_f1,x0,tol)
+    img_path = "actual_plot.png"
+    plt.savefig(img_path)
+    plt.close()  
+
+    return img_path
+
+
+def calculate_optimization_methods(f,tol,x0):
+
+    x0 = np.array([x0])
+    if f == "x**2":
+        img_path = optimization_methods(f1,grad_f1,x0,tol)
+    else:
+        img_path = optimization_methods(f2,grad_f2,x0,tol)
+    
+    return img_path
+
+        
+
+
+
 
